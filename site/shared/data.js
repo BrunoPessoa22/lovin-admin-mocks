@@ -18,11 +18,11 @@ window.LM = {
   ],
 
   attention: [
-    { value: 7, label: 'items in the Review centre', section: 'review' },
-    { value: 12, label: 'marketplace listings to review', section: 'market' },
-    { value: 1, label: 'unhandled errors, 24 h', section: 'settings' },
-    { value: 2, label: 'sources stale or failing', section: 'intel', sub: ['pa-planning', 'jobsplus-labour'] },
-    { value: 1, label: 'releases waiting for a description', section: 'home' }
+    { value: 7, label: 'items in the Review centre', section: 'review', delta: { text: '+3 since 09:00', tone: 'warning', dir: 'up' } },
+    { value: 12, label: 'marketplace listings to review', section: 'market', delta: { text: '+5 today', tone: 'warning', dir: 'up' } },
+    { value: 1, label: 'unhandled errors, 24 h', section: 'settings', delta: { text: '-4 vs yesterday', tone: 'success', dir: 'down' } },
+    { value: 2, label: 'sources stale or failing', section: 'intel', sub: ['pa-planning', 'jobsplus-labour'], delta: { text: 'of 9 sources', tone: 'default' } },
+    { value: 1, label: 'releases waiting for a description', section: 'home', delta: { text: 'v1.71, 08:59', tone: 'default' } }
   ],
 
   top: [

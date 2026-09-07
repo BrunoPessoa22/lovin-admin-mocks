@@ -29,12 +29,13 @@
     return 'warning';
   }
   var link = function (section, extra) { return './#section=' + section + (extra || ''); };
+  var initials = function (name) { return String(name).split(/\s+/).slice(0, 2).map(function (w) { return w.charAt(0); }).join('').toUpperCase(); };
 
   /* ---------- HOME ---------- */
   function home() {
     var attn = D.attention.map(function (a) {
       var sub = a.sub ? a.sub.map(function (s) { return '<a href="' + link('intel', '&intel=' + s) + '">' + esc(s) + '</a>'; }).join(' ') : '';
-      return UI.stat({ value: a.value, label: a.label, href: link(a.section), sub: sub });
+      return UI.stat({ value: a.value, label: a.label, href: link(a.section), sub: sub, delta: a.delta });
     }).join('');
     var top = D.top.map(function (t) { return UI.plainStat(t); }).join('');
 
@@ -106,7 +107,7 @@
       attrs: 'id="people-table"',
       columns: [{ label: 'User', sortable: true }, { label: 'Provider' }, { label: 'Trust', sortable: true }, { label: 'Reports', align: 'right', sortable: true, active: 'desc' }, { label: 'Points', align: 'right', sortable: true }, { label: 'Last connection', mono: true }, { label: 'Status' }],
       rows: D.people.rows.map(function (r, i) {
-        return [UI.person({ name: r.name, sub: r.provider === 'WhatsApp' ? '+356 79 ...' : r.provider, href: link('people', '&member=' + i) }),
+        return [UI.person({ name: r.name, sub: r.provider === 'WhatsApp' ? '+356 79 ...' : r.provider, href: link('people', '&member=' + i), avatar: initials(r.name) }),
           UI.chip({ label: r.provider, tone: 'default' }), UI.chip({ label: r.trust, tone: trustTone(r.trust), soft: true }),
           UI.num(r.reports), UI.num(r.points), UI.mono(r.last), UI.chip({ label: r.status, tone: statusTone(r.status), dot: true })];
       }),
@@ -138,21 +139,17 @@
   /* ---------- MARKETPLACE ---------- */
   function market() {
     var queue = UI.table({
-      columns: [{ label: 'Listing' }, { label: 'Seller' }, { label: 'Locality' }, { label: 'Price', align: 'right' }, { label: 'Contact' }, { label: 'Age', mono: true }, { label: 'Actions', align: 'right' }],
+      columns: [{ label: 'Listing' }, { label: 'Seller' }, { label: 'Locality' }, { label: 'Price', align: 'right' }, { label: 'Age', mono: true }, { label: 'Actions', align: 'right' }],
       rows: D.market.queue.map(function (r) {
-        return [UI.person({ name: r[0], sub: r[1], href: link('market', '&listing=1') }), esc(r[2]), esc(r[3]), UI.num(r[4]), esc(r[5]), UI.mono(r[6]),
+        return [UI.person({ name: r[0], sub: r[1], href: link('market', '&listing=1') }), UI.person({ name: r[2], sub: r[5], avatar: initials(r[2]) }), esc(r[3]), UI.num(r[4]), UI.mono(r[6]),
           '<div class="' + UI.cls.actions + '">' + UI.button({ label: 'Release', icon: 'check', variant: 'primary', size: 'sm' }) + UI.button({ label: 'Hold', icon: 'pause', variant: 'secondary', size: 'sm' }) + UI.button({ label: 'Reject', icon: 'x', variant: 'ghost', size: 'sm' }) + '</div>'];
       })
     });
-    var search = UI.formRow([
-      UI.input({ label: 'Search all listings', placeholder: 'title, description or listing id', icon: 'search', grow: 2 }),
-      UI.select({ label: 'Section', options: ['All sections', 'Lovin Jobs', 'Lovin Properties', 'Lovin Cars'] }),
-      UI.buttonSlot(UI.button({ label: 'Search', icon: 'search', variant: 'secondary' }))
-    ]);
+    var search = UI.toolbar({ search: 'title, description or listing id', buttons: [{ label: 'Section', icon: 'layers' }, { label: 'Sort', icon: 'arrow-up-down' }, { label: 'Columns', icon: 'columns-3' }] });
     var statuses = UI.filterChips(D.market.statuses);
     var all = UI.table({
       columns: [{ label: 'Listing' }, { label: 'Status' }, { label: 'Seller' }, { label: 'Locality' }, { label: 'Price', align: 'right' }, { label: 'Posted', mono: true }],
-      rows: D.market.all.map(function (r) { return [UI.person({ name: r[0], sub: r[2], href: link('market', '&listing=1') }), UI.chip({ label: r[1], tone: statusTone(r[1]), dot: true }), esc(r[3]), esc(r[4]), UI.num(r[5]), UI.mono(r[6])]; }),
+      rows: D.market.all.map(function (r) { return [UI.person({ name: r[0], sub: r[2], href: link('market', '&listing=1') }), UI.chip({ label: r[1], tone: statusTone(r[1]), dot: true }), UI.person({ name: r[3], sub: '', avatar: initials(r[3]) }), esc(r[4]), UI.num(r[5]), UI.mono(r[6])]; }),
       footer: UI.pagination({ page: 1, pages: 102, summary: '1 to 8 of 812' })
     });
     var listPanel = '<div id="market-list">' + UI.stack([
@@ -197,7 +194,7 @@
     ]) });
     var backfill = UI.card({ title: 'Deep backfill', description: 'Walks a source\'s own archive pager beyond the bounded refresh: a page depth, a date floor or both. Only archive-backed sources have a walker.',
       body: UI.formRow([UI.input({ label: 'Source slug', placeholder: 'pick a source above', mono: true }), UI.input({ label: 'Pages', placeholder: '1-120', type: 'number' }), UI.input({ label: 'Since', placeholder: '30d, 1y or YYYY-MM-DD' }), UI.buttonSlot(UI.button({ label: 'Run backfill', icon: 'database', variant: 'primary' }))]) });
-    var feedFilters = UI.formRow([UI.select({ label: 'Source', options: ['All sources'].concat(D.intel.sources.map(function (s) { return s[1]; })) }), UI.select({ label: 'Category', options: ['All categories', 'government', 'statistics', 'finance'] }), UI.select({ label: 'Kind', options: ['All kinds', 'release', 'notice', 'publication'] }), UI.input({ label: 'Search', placeholder: 'title or summary', icon: 'search' }), UI.select({ label: 'Capture window', options: ['Today', 'Yesterday', 'Last 7 days', 'Last 30 days', 'All time'] })]);
+    var feedFilters = UI.toolbar({ search: 'title or summary', buttons: [{ label: 'Source', icon: 'rss' }, { label: 'Kind', icon: 'tag' }, { label: 'Last 7 days', icon: 'calendar' }] });
     var feed = UI.table({
       columns: [{ label: 'Captured', mono: true }, { label: 'Source' }, { label: 'Title' }, { label: 'Kind' }, { label: 'Published', mono: true }],
       rows: D.intel.items.map(function (i) { return [UI.mono(i[0]), UI.mono(i[1]), '<b>' + esc(i[2]) + '</b>', UI.chip({ label: i[3], tone: 'default' }), UI.mono(i[4])]; }),
