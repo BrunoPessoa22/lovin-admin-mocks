@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en-MT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lovin Malta app · Mock 3 · Social feed</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/app/frame.css">
+<style>
+  :root { --app-bg: #fff; --status-fg: #000; --bg: #fff; --fg: #0B0F14; --fg2: #42576C; --fg3: #6B7A8C; --line: #E6EAEE; --fill: #F1F3F5; --tint: #E4162B; --tint-soft: #FCE8EB; --like: #E4162B; --glass: rgba(255,255,255,.72); --glass-line: rgba(255,255,255,.8); --sea: #DDE8F1; --land: #F4F1E8; --road: #fff; }
+  @media (prefers-color-scheme: dark) { :root { --app-bg: #0F1419; --status-fg: #fff; --bg: #0F1419; --fg: #F1F3F5; --fg2: #AEBBC9; --fg3: #7A8A9B; --line: #1F2A35; --fill: #1B2430; --tint: #FF4D5F; --tint-soft: rgba(255,77,95,.16); --glass: rgba(20,26,33,.72); --glass-line: rgba(255,255,255,.1); --sea: #12202B; --land: #262B2A; --road: #34393E; } }
+  .app { font-family: -apple-system, "SF Pro Text", system-ui, sans-serif; color: var(--fg); -webkit-font-smoothing: antialiased; }
+  main { position: absolute; inset: 0; }
+  [data-screen] { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; padding: 54px 0 120px; scrollbar-width: none; }
+  [data-screen]::-webkit-scrollbar { display: none; }
+  .bar { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+  .bar-row { display: flex; align-items: center; justify-content: space-between; height: 48px; padding: 0 16px; }
+  .bar-row .t { font-size: 17px; font-weight: 700; }
+  .bar-row .av { width: 30px; height: 30px; border-radius: 15px; background: var(--tint); color: #fff; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+  .bar-row i { width: 22px; height: 22px; color: var(--fg); }
+  .feedtabs { display: flex; padding: 0 8px; }
+  .feedtabs button { flex: 1; height: 42px; border: 0; background: none; font: 600 15px -apple-system, system-ui; color: var(--fg3); position: relative; }
+  .feedtabs button[data-selected="true"] { color: var(--fg); }
+  .feedtabs button[data-selected="true"]::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 0; height: 3px; border-radius: 2px; background: var(--tint); }
+  .post { display: flex; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .post .av { width: 42px; height: 42px; border-radius: 21px; flex: none; background: var(--fill); color: var(--fg2); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; }
+  .post .av.brand { background: var(--tint); color: #fff; }
+  .post .av i { width: 20px; height: 20px; }
+  .post .body { flex: 1; min-width: 0; }
+  .who { display: flex; align-items: baseline; gap: 4px; font-size: 15px; white-space: nowrap; overflow: hidden; }
+  .who b { font-weight: 700; } .who span { color: var(--fg3); overflow: hidden; text-overflow: ellipsis; }
+  .who .v { color: var(--tint); width: 14px; height: 14px; align-self: center; flex: none; }
+  .text { font-size: 15.5px; line-height: 1.35; margin-top: 2px; }
+  .text b { font-weight: 600; }
+  .media { margin-top: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--fill); }
+  .media img { width: 100%; height: 170px; object-fit: cover; display: block; }
+  .media .lc { padding: 10px 12px; }
+  .media .lc .h { font-size: 15px; font-weight: 600; line-height: 1.25; }
+  .media .lc .d { font-size: 12px; color: var(--fg3); margin-top: 4px; }
+  .map-thumb { height: 120px; position: relative; }
+  .map-thumb .map { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .actions { display: flex; align-items: center; margin-top: 8px; color: var(--fg3); font-size: 13px; }
+  .actions button { flex: 1; display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; color: inherit; font: 500 13px -apple-system, system-ui; padding: 4px 0; }
+  .actions button i { width: 18px; height: 18px; }
+  .actions button[data-like][data-selected="true"] { color: var(--like); } .actions button[data-like][data-selected="true"] i { fill: var(--like); }
+  .actions button.conf[data-selected="true"] { color: #1A8F4C; }
+  .tag { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--fill); color: var(--fg2); font-size: 12px; font-weight: 600; margin-top: 6px; }
+  .tag.hot { background: var(--tint-soft); color: var(--tint); }
+  .tag i { width: 12px; height: 12px; }
+  .fab { position: absolute; right: 18px; bottom: 104px; z-index: 4; width: 56px; height: 56px; border-radius: 28px; background: var(--tint); color: #fff; border: 0; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(228,22,43,.35); }
+  .fab i { width: 24px; height: 24px; }
+  .map .sea { fill: var(--sea); } .map .land { fill: var(--land); } .map .roads { stroke: var(--road); } .map .labels text { fill: var(--fg3); font-family: -apple-system, system-ui; font-weight: 600; }
+  .pin .pin-halo { fill: var(--tint); opacity: .22; } .pin .pin-dot { fill: var(--tint); stroke: #fff; stroke-width: .8; }
+  /* events */
+  .rsvp { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; border-radius: 16px; background: var(--tint); color: #fff; font-size: 13px; font-weight: 600; margin-top: 10px; }
+  .rsvp.ghost { background: var(--fill); color: var(--fg); margin-left: 6px; }
+  .rsvp i { width: 14px; height: 14px; }
+  .datebox { position: absolute; top: 10px; left: 10px; background: #fff; color: #000; border-radius: 8px; padding: 6px 8px; text-align: center; font-size: 11px; font-weight: 700; line-height: 1.1; text-transform: uppercase; }
+  .datebox b { display: block; font-size: 18px; }
+  /* chat */
+  .chat { padding: 8px 16px; display: flex; flex-direction: column; gap: 6px; }
+  .msg { max-width: 78%; padding: 10px 14px; border-radius: 18px; font-size: 15.5px; line-height: 1.35; }
+  .msg.ejja { align-self: flex-start; background: var(--fill); border-bottom-left-radius: 4px; }
+  .msg.me { align-self: flex-end; background: var(--tint); color: #fff; border-bottom-right-radius: 4px; }
+  .msg .at { display: block; font-size: 11px; opacity: .55; margin-top: 3px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 0 8px; }
+  .chips button { height: 32px; padding: 0 12px; border-radius: 16px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: 500 14px -apple-system, system-ui; }
+  .composer { position: absolute; left: 0; right: 0; bottom: 92px; display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--bg); border-top: 1px solid var(--line); z-index: 4; }
+  .composer .field { flex: 1; height: 40px; border-radius: 20px; background: var(--fill); display: flex; align-items: center; padding: 0 14px; color: var(--fg3); font-size: 15px; }
+  .composer i { width: 22px; height: 22px; color: var(--tint); }
+  /* profile */
+  .banner { height: 120px; background: var(--fill); }
+  .banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .prof { padding: 0 16px; }
+  .prof .av { width: 80px; height: 80px; border-radius: 40px; background: var(--tint); color: #fff; font-size: 26px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; border: 3px solid var(--bg); margin-top: -42px; }
+  .prof .btns { float: right; margin-top: 8px; display: flex; gap: 6px; }
+  .prof .btn { height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid var(--line); background: var(--bg); font: 600 14px -apple-system, system-ui; color: var(--fg); }
+  .prof .btn.pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .prof .n { font-size: 22px; font-weight: 800; margin-top: 6px; letter-spacing: -.3px; } .prof .h { font-size: 14px; color: var(--fg3); }
+  .prof .bio { font-size: 15px; margin-top: 8px; line-height: 1.35; }
+  .prof .st { display: flex; gap: 14px; margin-top: 10px; font-size: 14px; color: var(--fg3); }
+  .prof .st b { color: var(--fg); font-weight: 700; }
+  .srow { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .srow i { width: 20px; height: 20px; color: var(--fg2); } .srow .s { color: var(--fg3); font-size: 13px; margin-left: auto; }
+  /* native tab bar */
+  .tabbar { position: absolute; left: 14px; right: 14px; bottom: 26px; height: 66px; border-radius: 33px; z-index: 10; display: flex; align-items: center; padding: 6px; backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); background: var(--glass); border: 1px solid var(--glass-line); box-shadow: 0 6px 20px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.5); }
+  .tabbar a { flex: 1; height: 54px; border-radius: 27px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--fg2); text-decoration: none; font-size: 10px; font-weight: 600; }
+  .tabbar a i { width: 24px; height: 24px; }
+  .tabbar a[data-selected="true"] { color: var(--tint); background: color-mix(in srgb, var(--fg) 7%, transparent); }
+  @media (max-width: 520px) { .tabbar { bottom: 18px; } .fab { bottom: 96px; } .composer { bottom: 84px; } }
+  /* composer sheet */
+  #sheet { position: absolute; inset: 0; z-index: 40; background: var(--bg); padding: 54px 0 0; }
+  .cbar { display: flex; align-items: center; justify-content: space-between; padding: 6px 16px; }
+  .cbar button { border: 0; background: none; font: 500 17px -apple-system, system-ui; color: var(--tint); }
+  .cbar button.post { background: var(--tint); color: #fff; height: 34px; padding: 0 16px; border-radius: 17px; font-weight: 700; }
+  .compose { display: flex; gap: 10px; padding: 8px 16px; }
+  .compose .av { width: 42px; height: 42px; border-radius: 21px; background: var(--tint); color: #fff; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .compose .ta { flex: 1; font-size: 18px; color: var(--fg3); line-height: 1.4; min-height: 120px; }
+  .ckinds { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 16px; }
+  .ckinds button { height: 30px; padding: 0 12px; border-radius: 15px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: 500 13px -apple-system, system-ui; display: inline-flex; align-items: center; gap: 5px; }
+  .ckinds button i { width: 13px; height: 13px; }
+  .ckinds button[data-selected="true"] { background: var(--tint); color: #fff; border-color: var(--tint); }
+  .ctools { display: flex; gap: 18px; padding: 10px 16px; border-top: 1px solid var(--line); color: var(--tint); }
+  .ctools i { width: 22px; height: 22px; }
+  .ctools .loc { margin-left: auto; font-size: 13px; color: var(--fg3); display: inline-flex; align-items: center; gap: 4px; } .ctools .loc i { width: 14px; height: 14px; color: var(--fg3); }
+</style>
+</head>
+<body>
+<div class="phone"><div class="app">
+  <div class="statusbar"><span>9:41</span><span class="sb-right"><i data-lucide="signal"></i><i data-lucide="wifi"></i><span class="bat"></span></span></div>
+  <main id="main"></main>
+  <nav class="tabbar" aria-label="Tabs">
+    <a href="#live" data-tab="live"><i data-lucide="radio"></i>Live</a>
+    <a href="#news" data-tab="news"><i data-lucide="newspaper"></i>News</a>
+    <a href="#whatson" data-tab="whatson"><i data-lucide="calendar-days"></i>What's on</a>
+    <a href="#ejja" data-tab="ejja"><i data-lucide="message-circle"></i>Ejja</a>
+    <a href="#you" data-tab="you"><i data-lucide="user-round"></i>You</a>
+  </nav>
+  <div id="sheet" hidden><div class="cbar"><button type="button" data-close-sheet>Cancel</button><button type="button" class="post" data-close-sheet>Post report</button></div>
+    <div class="compose"><span class="av">MC</span><div class="ta">What is happening near you? Keep it factual, no names.</div></div>
+    <div class="ckinds"><button type="button" data-seg data-selected="true"><i data-lucide="zap"></i>Power</button><button type="button" data-seg><i data-lucide="traffic-cone"></i>Traffic</button><button type="button" data-seg><i data-lucide="waves"></i>Water</button><button type="button" data-seg><i data-lucide="fish"></i>Sea</button><button type="button" data-seg><i data-lucide="siren"></i>Incident</button><button type="button" data-seg><i data-lucide="paw-print"></i>Animal</button><button type="button" data-seg><i data-lucide="more-horizontal"></i>Other</button></div>
+    <div class="ctools"><i data-lucide="image"></i><i data-lucide="camera"></i><i data-lucide="map-pin"></i><span class="loc"><i data-lucide="locate"></i>Tower Road, Sliema</span></div>
+  </div>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+<script src="/app/data.js"></script><script src="/app/map.js"></script><script src="/app/base.js"></script>
+<script>
+(function () {
+  var D = window.LMA, esc = window.LMBase.esc, ic = function (n) { return '<i data-lucide="' + n + '"></i>'; };
+  var ini = function (n) { return n.split(/\s+/).map(function (w) { return w[0]; }).join('').toUpperCase().slice(0, 2); };
+  function actions(a, b, c, liked) { return '<div class="actions"><button type="button">' + ic('message-circle') + a + '</button><button type="button" class="conf" data-like ' + (liked ? 'data-selected="true"' : '') + '>' + ic('circle-check') + b + '</button><button type="button" data-like>' + ic('heart') + c + '</button><button type="button">' + ic('share') + '</button></div>'; }
+  function bar(title, tabs, right) { return '<div class="bar"><div class="bar-row"><span class="av">MC</span><span class="t">' + title + '</span><i data-lucide="' + (right || 'search') + '"></i></div>' + (tabs ? '<div class="feedtabs">' + tabs.map(function (t, i) { return '<button type="button" data-seg ' + (i === 0 ? 'data-selected="true"' : '') + '>' + t + '</button>'; }).join('') + '</div>' : '') + '</div>'; }
+  function live() {
+    return '<section data-screen="live">' + bar('Live', ['All Malta', 'Sliema', 'Following'], 'map') +
+      D.reports.map(function (r, i) { return '<article class="post"><span class="av">' + ini(r.by) + '</span><div class="body"><div class="who"><b>' + esc(r.by) + '</b>' + (r.count > 3 ? ic('badge-check').replace('<i ', '<i class="v" ') : '') + '<span>· ' + esc(r.locality) + ' · ' + esc(r.age) + '</span></div><div class="text"><b>' + esc(r.title) + '.</b> ' + esc(r.confidence.charAt(0).toUpperCase() + r.confidence.slice(1)) + '.</div>' + (i === 0 ? '<div class="media"><div class="map-thumb">' + window.LMMap() + '</div><div class="lc"><div class="d">' + ic('map-pin') + ' Tower Road, Sliema · open on the map</div></div></div>' : '') + '<span class="tag ' + (r.count > 2 ? 'hot' : '') + '">' + ic('users') + r.count + ' ' + (r.count === 1 ? 'report' : 'reports') + '</span>' + actions(i === 0 ? 6 : 2, r.count, r.votes, i === 0) + '</div></article>'; }).join('') +
+      '<button type="button" class="fab" data-open-sheet aria-label="New report">' + ic('pen-line') + '</button></section>';
+  }
+  function news() {
+    return '<section data-screen="news">' + bar('News', ['Latest', 'Local', 'Food', 'Gozo']) +
+      D.news.map(function (n, i) { return '<article class="post"><span class="av brand">L</span><div class="body"><div class="who"><b>Lovin Malta</b>' + ic('badge-check').replace('<i ', '<i class="v" ') + '<span>· @lovinmalta · ' + esc(n.age) + '</span></div><div class="text">' + esc(n.dek || n.title) + '</div><div class="media"><img src="' + D.img(n.img, 700, 340) + '" alt=""><div class="lc"><div class="h">' + esc(n.title) + '</div><div class="d">lovinmalta.com · ' + esc(n.section) + '</div></div></div>' + actions(12 + i * 3, 0, 140 - i * 17, i === 1).replace(ic('circle-check') + '0', ic('repeat-2') + (8 + i)) + '</div></article>'; }).join('') + '</section>';
+  }
+  function whatson() {
+    return '<section data-screen="whatson">' + bar('What\'s on', ['This week', 'Weekend', 'Going'], 'calendar') +
+      D.events.map(function (e, i) { return '<article class="post"><span class="av">' + ini(e.venue) + '</span><div class="body"><div class="who"><b>' + esc(e.title) + '</b><span>· ' + esc(e.cat) + '</span></div><div class="text">' + esc(e.venue) + ' · ' + esc(e.day) + ' ' + esc(e.date) + ', ' + esc(e.time) + '</div><div class="media" style="position:relative"><img src="' + D.img(e.img, 700, 340) + '" alt=""><div class="datebox">' + esc(e.day) + '<b>' + e.date.split(' ')[0] + '</b>' + e.date.split(' ')[1] + '</div></div><span class="rsvp">' + ic('check') + (i === 0 ? '312 going' : (40 + i * 23) + ' going') + '</span><span class="rsvp ghost">' + ic('bookmark') + 'Save</span>' + actions(3 + i, 0, 60 + i * 9, i === 0).replace(ic('circle-check') + '0', ic('repeat-2') + (2 + i)) + '</div></article>'; }).join('') + '</section>';
+  }
+  function ejja() {
+    return '<section data-screen="ejja">' + bar('Ejja', null, 'info') + '<div class="chat"><div style="text-align:center;font-size:12px;color:var(--fg3);padding:8px 0">Today 09:58</div>' + D.chat.map(function (m) { return '<div class="msg ' + m.from + '">' + esc(m.text) + '<span class="at">' + m.at + '</span></div>' + (m.chips ? '<div class="chips">' + m.chips.map(function (c) { return '<button type="button">' + esc(c) + '</button>'; }).join('') + '</div>' : ''); }).join('') + '</div>' +
+      '<div class="composer">' + ic('plus') + '<span class="field">Message Ejja</span>' + ic('mic') + '</div></section>';
+  }
+  function you() {
+    var p = D.profile;
+    return '<section data-screen="you"><div class="banner"><img src="' + D.img('sliema-front', 800, 300) + '" alt=""></div><div class="prof"><div class="btns"><button type="button" class="btn">' + ic('share').replace('<i ', '<i style="width:16px;height:16px;vertical-align:-3px" ') + '</button><button type="button" class="btn pri">Edit profile</button></div><span class="av">' + p.initials + '</span><div class="n">' + esc(p.name) + '</div><div class="h">@maria.sliema · ' + esc(p.locality) + '</div><div class="bio">' + esc(p.trust) + '. Reporting from Tower Road since June. Storm watcher, bus 13 regular.</div><div class="st"><span><b>' + p.reports + '</b> reports</span><span><b>' + p.points + '</b> points</span><span><b>#' + p.rank + '</b> this month</span></div></div>' +
+      '<div class="feedtabs" style="margin-top:8px;border-bottom:1px solid var(--line)"><button type="button" data-seg data-selected="true">Reports</button><button type="button" data-seg>Badges</button><button type="button" data-seg>Saved</button><button type="button" data-seg>Alerts</button></div>' +
+      D.reports.filter(function (r) { return r.by === 'Maria C.' || r.by === 'Sarah Z.'; }).map(function (r) { return '<article class="post"><span class="av">' + p.initials + '</span><div class="body"><div class="who"><b>' + esc(p.name) + '</b><span>· ' + esc(r.locality) + ' · ' + esc(r.age) + '</span></div><div class="text"><b>' + esc(r.title) + '.</b> ' + esc(r.confidence) + '.</div>' + actions(4, r.count, r.votes, true) + '</div></article>'; }).join('') +
+      D.settings.slice(0, 4).map(function (s) { return '<div class="srow">' + ic(s[2]) + esc(s[0]) + '<span class="s">' + esc(s[1]) + '</span></div>'; }).join('') + '</section>';
+  }
+  window.LMBase.boot(function () { document.getElementById('main').innerHTML = live() + news() + whatson() + ejja() + you(); });
+})();
+</script>
+</body>
+</html>

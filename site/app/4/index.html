@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en-MT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lovin Malta app · Mock 4 · Editorial</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app/frame.css">
+<style>
+  :root { --app-bg: #FFFFFF; --status-fg: #000; --bg: #fff; --fg: #111; --fg2: #444; --fg3: #7A7A7A; --line: #E5E2DA; --line2: #111; --fill: #F5F3EE; --red: #E4162B; --glass: rgba(255,255,255,.7); --glass-line: rgba(255,255,255,.8); --sea: #E7E3D9; --land: #fff; --road: #E5E2DA; }
+  @media (prefers-color-scheme: dark) { :root { --app-bg: #101010; --status-fg: #fff; --bg: #101010; --fg: #F4F2EC; --fg2: #CFCCC3; --fg3: #8C8A83; --line: #2A2A28; --line2: #F4F2EC; --fill: #1B1B19; --red: #FF4D5F; --glass: rgba(20,20,20,.7); --glass-line: rgba(255,255,255,.12); --sea: #1E1E1C; --land: #101010; --road: #2A2A28; } }
+  .app { font-family: Figtree, -apple-system, system-ui, sans-serif; color: var(--fg); -webkit-font-smoothing: antialiased; }
+  main { position: absolute; inset: 0; }
+  [data-screen] { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; padding: 54px 0 120px; scrollbar-width: none; }
+  [data-screen]::-webkit-scrollbar { display: none; }
+  .mast { display: flex; align-items: flex-end; justify-content: space-between; padding: 12px 20px 10px; border-bottom: 2px solid var(--line2); margin: 0 20px; padding-left: 0; padding-right: 0; }
+  .mast .brand { font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1; } .mast .brand span { color: var(--red); }
+  .mast .date { font-size: 12px; color: var(--fg3); font-weight: 500; text-transform: uppercase; letter-spacing: .08em; }
+  .mast i { width: 22px; height: 22px; }
+  .kicker { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
+  .kicker.mute { color: var(--fg3); }
+  .serif { font-family: Newsreader, Georgia, serif; }
+  .hero { margin: 16px 20px 0; }
+  .hero img { width: 100%; height: 230px; object-fit: cover; display: block; }
+  .hero .h { font-size: 27px; font-weight: 600; line-height: 1.1; margin-top: 12px; letter-spacing: -.3px; }
+  .hero .dek { font-size: 15px; color: var(--fg2); line-height: 1.4; margin-top: 8px; }
+  .by { font-size: 12px; color: var(--fg3); margin-top: 8px; }
+  .rule { margin: 18px 20px 0; border-top: 1px solid var(--line); }
+  .sec { display: flex; align-items: baseline; justify-content: space-between; margin: 18px 20px 6px; }
+  .sec .kicker { font-size: 12px; }
+  .sec a { font-size: 12px; color: var(--fg3); text-decoration: none; font-weight: 600; }
+  .item { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-top: 1px solid var(--line); margin: 0 20px; }
+  .item .num { font-family: Newsreader, serif; font-size: 26px; line-height: 1; color: var(--fg3); width: 26px; flex: none; }
+  .item .h { font-size: 17px; font-weight: 600; line-height: 1.25; letter-spacing: -.2px; }
+  .item .m { font-size: 12px; color: var(--fg3); margin-top: 6px; }
+  .item img { width: 76px; height: 76px; object-fit: cover; flex: none; }
+  /* live */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); margin: 14px 20px 0; border: 1px solid var(--line); }
+  .tile { background: var(--bg); padding: 14px 14px 12px; }
+  .tile .k { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); }
+  .tile .v { font-size: 34px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-top: 6px; }
+  .tile .v small { font-size: 14px; font-weight: 500; color: var(--fg2); letter-spacing: 0; }
+  .tile .s { font-size: 12px; color: var(--fg2); margin-top: 4px; line-height: 1.3; }
+  .map-band { margin: 16px 20px 0; height: 160px; position: relative; border: 1px solid var(--line); overflow: hidden; }
+  .map-band .map { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .map-band .lab { position: absolute; left: 10px; bottom: 8px; background: var(--bg); padding: 4px 8px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .map .sea { fill: var(--sea); } .map .land { fill: var(--land); stroke: var(--fg); stroke-width: .35; } .map .roads { stroke: var(--road); } .map .labels text { fill: var(--fg2); font-family: Figtree, system-ui; font-weight: 700; }
+  .pin .pin-halo { fill: var(--red); opacity: .18; } .pin .pin-dot { fill: var(--red); stroke: var(--bg); stroke-width: .8; }
+  .rep { display: flex; gap: 12px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--line); margin: 0 20px; }
+  .rep .k { flex: none; width: 74px; } .rep .k .kicker { font-size: 10px; } .rep .k .age { font-size: 12px; color: var(--fg3); margin-top: 2px; }
+  .rep .h { font-size: 17px; font-weight: 600; line-height: 1.25; } .rep .c { font-size: 12px; color: var(--fg3); margin-top: 4px; }
+  .rep .n { margin-left: auto; font-size: 12px; color: var(--fg3); white-space: nowrap; }
+  .cta { display: flex; align-items: center; justify-content: space-between; margin: 12px 20px 0; padding: 12px 0; border-top: 2px solid var(--line2); border-bottom: 1px solid var(--line); font-size: 15px; font-weight: 700; }
+  .cta button { height: 38px; padding: 0 16px; border: 0; background: var(--fg); color: var(--bg); font: 700 14px Figtree, system-ui; display: inline-flex; align-items: center; gap: 6px; }
+  .cta button i { width: 15px; height: 15px; }
+  /* what's on: poster grid */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 20px 0; }
+  .poster img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; background: var(--fill); }
+  .poster .h { font-size: 15px; font-weight: 700; line-height: 1.2; margin-top: 8px; letter-spacing: -.2px; }
+  .poster .m { font-size: 12px; color: var(--fg3); margin-top: 3px; }
+  .featured { margin: 16px 20px 0; }
+  .featured img { width: 100%; height: 240px; object-fit: cover; display: block; }
+  .featured .h { font-family: Newsreader, serif; font-size: 30px; font-weight: 600; line-height: 1.05; margin-top: 10px; }
+  .chipsrow { display: flex; gap: 6px; padding: 14px 20px 0; overflow-x: auto; scrollbar-width: none; }
+  .chipsrow button { flex: none; height: 30px; padding: 0 12px; border: 1px solid var(--line2); background: var(--bg); color: var(--fg); font: 600 12px Figtree, system-ui; letter-spacing: .04em; text-transform: uppercase; }
+  .chipsrow button[data-selected="true"] { background: var(--fg); color: var(--bg); }
+  /* ejja */
+  .chat { padding: 8px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .msg { max-width: 84%; padding: 10px 14px; font-size: 16px; line-height: 1.4; }
+  .msg.ejja { align-self: flex-start; background: var(--fill); border-left: 3px solid var(--red); }
+  .msg.me { align-self: flex-end; background: var(--fg); color: var(--bg); }
+  .msg .at { display: block; font-size: 11px; opacity: .55; margin-top: 4px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 0 6px; }
+  .chips button { height: 32px; padding: 0 12px; border: 1px solid var(--line2); background: var(--bg); color: var(--fg); font: 600 12px Figtree, system-ui; text-transform: uppercase; letter-spacing: .04em; }
+  .composer { position: absolute; left: 20px; right: 20px; bottom: 104px; height: 48px; border: 1px solid var(--line2); background: var(--bg); display: flex; align-items: center; gap: 8px; padding: 0 6px 0 14px; z-index: 4; }
+  .composer .field { flex: 1; font-size: 15px; color: var(--fg3); }
+  .composer .send { width: 36px; height: 36px; background: var(--fg); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; }
+  .composer i { width: 18px; height: 18px; }
+  .ejja-intro { margin: 16px 20px 0; padding-bottom: 14px; border-bottom: 2px solid var(--line2); }
+  .ejja-intro .h { font-family: Newsreader, serif; font-size: 28px; font-weight: 600; line-height: 1.05; }
+  .ejja-intro .s { font-size: 13px; color: var(--fg3); margin-top: 6px; }
+  /* you */
+  .me { margin: 16px 20px 0; padding-bottom: 14px; border-bottom: 2px solid var(--line2); }
+  .me .n { font-family: Newsreader, serif; font-size: 34px; font-weight: 600; line-height: 1; letter-spacing: -.3px; }
+  .me .s { font-size: 13px; color: var(--fg3); margin-top: 6px; }
+  .nums { display: flex; margin: 0 20px; border-bottom: 1px solid var(--line); }
+  .nums div { flex: 1; padding: 14px 0; } .nums div + div { border-left: 1px solid var(--line); padding-left: 14px; }
+  .nums b { display: block; font-size: 30px; font-weight: 700; letter-spacing: -1px; line-height: 1; } .nums span { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--fg3); }
+  .row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-top: 1px solid var(--line); margin: 0 20px; font-size: 16px; font-weight: 600; }
+  .row .s { margin-left: auto; font-size: 12px; color: var(--fg3); font-weight: 500; text-align: right; }
+  .row i { width: 18px; height: 18px; color: var(--fg2); }
+  .toggle { width: 40px; height: 22px; border: 2px solid var(--fg); position: relative; flex: none; }
+  .toggle::after { content: ""; position: absolute; top: 2px; right: 2px; width: 14px; height: 14px; background: var(--fg); }
+  /* native tab bar */
+  .tabbar { position: absolute; left: 14px; right: 14px; bottom: 26px; height: 66px; border-radius: 33px; z-index: 10; display: flex; align-items: center; padding: 6px; backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); background: var(--glass); border: 1px solid var(--glass-line); box-shadow: 0 6px 20px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.5); }
+  .tabbar a { flex: 1; height: 54px; border-radius: 27px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--fg2); text-decoration: none; font-size: 10px; font-weight: 700; }
+  .tabbar a i { width: 24px; height: 24px; }
+  .tabbar a[data-selected="true"] { color: var(--red); background: color-mix(in srgb, var(--fg) 7%, transparent); }
+  @media (max-width: 520px) { .tabbar { bottom: 18px; } .composer { bottom: 96px; } }
+  /* sheet */
+  #sheet { position: absolute; inset: 0; z-index: 40; }
+  #sheet-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.5); }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 80%; background: var(--bg); padding: 18px 20px 20px; overflow-y: auto; border-top: 3px solid var(--fg); }
+  .sheet .t { font-family: Newsreader, serif; font-size: 30px; font-weight: 600; line-height: 1; margin-bottom: 4px; }
+  .sheet .s { font-size: 13px; color: var(--fg3); margin-bottom: 14px; }
+  .kinds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 14px; }
+  .kinds button { height: 68px; border: 0; background: var(--bg); color: var(--fg); font: 600 11px Figtree, system-ui; text-transform: uppercase; letter-spacing: .04em; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .kinds button i { width: 20px; height: 20px; }
+  .kinds button[data-selected="true"] { background: var(--fg); color: var(--bg); }
+  .field { border-bottom: 1px solid var(--line2); padding: 12px 0; font-size: 16px; color: var(--fg3); display: flex; align-items: center; gap: 8px; }
+  .field.area { min-height: 96px; align-items: flex-start; }
+  .field i { width: 16px; height: 16px; color: var(--fg); }
+  .sheet .send { width: 100%; height: 48px; border: 0; background: var(--red); color: #fff; font: 700 14px Figtree, system-ui; letter-spacing: .08em; text-transform: uppercase; margin-top: 18px; }
+  .sheet .cancel { width: 100%; height: 44px; border: 0; background: none; color: var(--fg3); font: 600 13px Figtree, system-ui; }
+</style>
+</head>
+<body>
+<div class="phone"><div class="app">
+  <div class="statusbar"><span>9:41</span><span class="sb-right"><i data-lucide="signal"></i><i data-lucide="wifi"></i><span class="bat"></span></span></div>
+  <main id="main"></main>
+  <nav class="tabbar" aria-label="Tabs">
+    <a href="#live" data-tab="live"><i data-lucide="radio"></i>Live</a>
+    <a href="#news" data-tab="news"><i data-lucide="newspaper"></i>News</a>
+    <a href="#whatson" data-tab="whatson"><i data-lucide="calendar-days"></i>What's on</a>
+    <a href="#ejja" data-tab="ejja"><i data-lucide="message-circle"></i>Ejja</a>
+    <a href="#you" data-tab="you"><i data-lucide="user-round"></i>You</a>
+  </nav>
+  <div id="sheet" hidden><div id="sheet-backdrop"></div><div class="sheet"><div class="t">New report</div><div class="s">Tower Road, Sliema · your location</div>
+    <div class="kinds"><button type="button" data-seg data-selected="true"><i data-lucide="zap"></i>Power</button><button type="button" data-seg><i data-lucide="traffic-cone"></i>Traffic</button><button type="button" data-seg><i data-lucide="waves"></i>Water</button><button type="button" data-seg><i data-lucide="fish"></i>Sea</button><button type="button" data-seg><i data-lucide="siren"></i>Incident</button><button type="button" data-seg><i data-lucide="paw-print"></i>Animal</button><button type="button" data-seg><i data-lucide="volume-2"></i>Noise</button><button type="button" data-seg><i data-lucide="more-horizontal"></i>Other</button></div>
+    <div class="field area">What is happening? Keep it factual, no names.</div>
+    <div class="field"><i data-lucide="camera"></i>Add a photo</div>
+    <button type="button" class="send" data-close-sheet>Send report</button><button type="button" class="cancel" data-close-sheet>Cancel</button>
+  </div></div>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+<script src="/app/data.js"></script><script src="/app/map.js"></script><script src="/app/base.js"></script>
+<script>
+(function () {
+  var D = window.LMA, esc = window.LMBase.esc, ic = function (n) { return '<i data-lucide="' + n + '"></i>'; };
+  var mast = function (right) { return '<div class="mast"><div><div class="date">Monday 7 September</div><div class="brand">Lovin <span>Malta</span></div></div>' + ic(right || 'search') + '</div>'; };
+  function live() {
+    return '<section data-screen="live">' + mast('bell') +
+      '<div class="tiles"><div class="tile"><div class="k">Sliema now</div><div class="v">' + D.now.temp + ' <small>sunny</small></div><div class="s">Sea ' + D.now.sea + ', wind ' + esc(D.now.wind) + '</div></div><div class="tile"><div class="k">Sunset</div><div class="v">' + D.now.sunset + '</div><div class="s">Golden hour from 18:30</div></div><div class="tile"><div class="k">Traffic</div><div class="v">Heavy</div><div class="s">' + esc(D.now.traffic) + '</div></div><div class="tile"><div class="k">Power</div><div class="v">1 <small>cut now</small></div><div class="s">' + esc(D.now.power) + '</div></div></div>' +
+      '<div class="map-band">' + window.LMMap() + '<span class="lab">' + D.now.reports + ' reports today · open the map</span></div>' +
+      '<div class="sec"><span class="kicker">Reports from residents</span><a href="#">Newest first</a></div>' +
+      D.reports.map(function (r) { return '<div class="rep"><div class="k"><div class="kicker mute">' + esc(r.locality) + '</div><div class="age">' + esc(r.age) + '</div></div><div style="flex:1;min-width:0"><div class="h">' + esc(r.title) + '</div><div class="c">' + esc(r.by) + ' · ' + esc(r.confidence) + '</div></div><span class="n">' + r.count + '</span></div>'; }).join('') +
+      '<div class="cta"><span>See something?</span><button type="button" data-open-sheet>' + ic('pen-line') + 'Report it</button></div></section>';
+  }
+  function news() {
+    var h = D.news[0];
+    return '<section data-screen="news">' + mast() +
+      '<div class="hero"><img src="' + D.img(h.img, 780, 460) + '" alt=""><div class="kicker" style="margin-top:12px">' + esc(h.section) + '</div><div class="h serif">' + esc(h.title) + '</div><div class="dek">' + esc(h.dek) + '</div><div class="by">By the Lovin Malta newsroom · ' + esc(h.age) + ' · 4 min read</div></div>' +
+      '<div class="sec"><span class="kicker">Latest</span><a href="#">All sections</a></div>' +
+      D.news.slice(1).map(function (n, i) { return '<div class="item"><span class="num">' + (i + 1) + '</span><div style="flex:1;min-width:0"><div class="h">' + esc(n.title) + '</div><div class="m">' + esc(n.section) + ' · ' + esc(n.age) + '</div></div>' + (i < 2 ? '<img src="' + D.img(n.img, 240, 240) + '" alt="">' : '') + '</div>'; }).join('') +
+      '<div class="cta"><span>The Intersection, every Thursday</span><button type="button">' + ic('mail') + 'Subscribe</button></div></section>';
+  }
+  function whatson() {
+    var f = D.events[0];
+    return '<section data-screen="whatson">' + mast('calendar') +
+      '<div class="chipsrow"><button type="button" data-seg data-selected="true">This week</button><button type="button" data-seg>Weekend</button><button type="button" data-seg>Music</button><button type="button" data-seg>Food</button><button type="button" data-seg>Gozo</button><button type="button" data-seg>Free</button></div>' +
+      '<div class="featured"><img src="' + D.img(f.img, 780, 480) + '" alt=""><div class="kicker" style="margin-top:12px">' + esc(f.day) + ' ' + esc(f.date) + ' · ' + esc(f.venue) + '</div><div class="h">' + esc(f.title) + '</div><div class="by">140 events, one night, the city open until 02:00 · from ' + esc(f.time) + '</div></div>' +
+      '<div class="sec"><span class="kicker">Friday to Sunday</span><a href="#">Calendar</a></div>' +
+      '<div class="grid">' + D.events.slice(1).map(function (e) { return '<div class="poster"><img src="' + D.img(e.img, 400, 500) + '" alt=""><div class="kicker mute" style="margin-top:8px">' + esc(e.day) + ' ' + esc(e.date) + ' · ' + esc(e.time) + '</div><div class="h">' + esc(e.title) + '</div><div class="m">' + esc(e.venue) + '</div></div>'; }).join('') + '</div></section>';
+  }
+  function ejja() {
+    return '<section data-screen="ejja">' + mast('info') + '<div class="ejja-intro"><div class="kicker">Ask Ejja</div><div class="h">Malta, answered in a minute.</div><div class="s">Power, traffic, sea, buses, what is open. Alerts for your locality between 08:00 and 22:00.</div></div>' +
+      '<div class="chat">' + D.chat.map(function (m) { return '<div class="msg ' + m.from + '">' + esc(m.text) + '<span class="at">' + m.at + '</span></div>' + (m.chips ? '<div class="chips">' + m.chips.map(function (c) { return '<button type="button">' + esc(c) + '</button>'; }).join('') + '</div>' : ''); }).join('') + '</div>' +
+      '<div class="composer"><span class="field">Ask Ejja anything about Malta</span><span class="send">' + ic('arrow-up') + '</span></div></section>';
+  }
+  function you() {
+    var p = D.profile;
+    return '<section data-screen="you">' + mast('settings') + '<div class="me"><div class="kicker">' + esc(p.trust) + ' · ' + esc(p.locality) + '</div><div class="n">' + esc(p.name) + '</div><div class="s">Reporting since June 2026 · member 7f3a91c2</div></div>' +
+      '<div class="nums"><div><b>' + p.points + '</b><span>points</span></div><div><b>' + p.reports + '</b><span>reports</span></div><div><b>#' + p.rank + '</b><span>this month</span></div></div>' +
+      '<div class="sec"><span class="kicker">Badges</span><a href="#">' + p.badges.length + ' earned</a></div>' + p.badges.map(function (b, i) { return '<div class="row">' + ic('award') + esc(b) + '<span class="s">' + ['12 Jun', '4 Jul', '22 Aug', '1 Sep'][i] + '</span></div>'; }).join('') +
+      '<div class="sec"><span class="kicker">Alerts</span></div><div class="row">' + ic('bell') + 'Locality alerts<span class="s">' + esc(p.alerts.join(', ')) + '</span><span class="toggle"></span></div>' +
+      '<div class="sec"><span class="kicker">Settings</span></div>' + D.settings.slice(2).map(function (s) { return '<div class="row">' + ic(s[2]) + esc(s[0]) + '<span class="s">' + esc(s[1]) + '</span></div>'; }).join('') + '</section>';
+  }
+  window.LMBase.boot(function () { document.getElementById('main').innerHTML = live() + news() + whatson() + ejja() + you(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en-MT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lovin Malta app · Mock 1 · Apple native (iOS 26)</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/app/frame.css">
+<style>
+  :root { --app-bg: #F2F2F7; --status-fg: #000; --bg: #F2F2F7; --card: #fff; --fg: #000; --fg2: #3C3C43; --fg3: #8E8E93; --line: rgba(60,60,67,.18); --fill: #E9E9EB; --tint: #E4162B; --tint-soft: #FCE8EB; --glass: rgba(255,255,255,.62); --glass-line: rgba(255,255,255,.75); --bubble: #E9E9EB; --sea: #D6E6F0; --land: #F3EFE4; --road: #fff; }
+  @media (prefers-color-scheme: dark) { :root { --app-bg: #000; --status-fg: #fff; --bg: #000; --card: #1C1C1E; --fg: #fff; --fg2: #EBEBF5; --fg3: #8E8E93; --line: rgba(84,84,88,.6); --fill: #2C2C2E; --tint: #FF4D5F; --tint-soft: rgba(255,77,95,.18); --glass: rgba(40,40,44,.6); --glass-line: rgba(255,255,255,.14); --bubble: #26262A; --sea: #14202B; --land: #2A2A26; --road: #3A3A3E; } }
+  .app { font-family: -apple-system, "SF Pro Text", "SF Pro Display", system-ui, sans-serif; color: var(--fg); -webkit-font-smoothing: antialiased; letter-spacing: -.2px; }
+  main { position: absolute; inset: 0; }
+  [data-screen] { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; padding: 54px 0 120px; scrollbar-width: none; }
+  [data-screen]::-webkit-scrollbar { display: none; }
+  .large { padding: 14px 20px 6px; font-size: 34px; font-weight: 700; letter-spacing: -.5px; }
+  .navbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 8px 20px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: color-mix(in srgb, var(--bg) 72%, transparent); }
+  .navbar .title { font-size: 17px; font-weight: 600; }
+  .nb-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 17px; background: var(--glass); border: 1px solid var(--glass-line); color: var(--tint); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  .nb-btn i { width: 18px; height: 18px; }
+  .search { margin: 4px 20px 10px; display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px; border-radius: 12px; background: var(--fill); color: var(--fg3); font-size: 17px; }
+  .search i { width: 17px; height: 17px; }
+  .group { margin: 10px 20px 18px; background: var(--card); border-radius: 20px; overflow: hidden; }
+  .group-title { margin: 0 20px; padding: 14px 0 6px; font-size: 13px; color: var(--fg3); text-transform: uppercase; letter-spacing: -.1px; }
+  .row { display: flex; align-items: center; gap: 12px; padding: 11px 16px; min-height: 44px; position: relative; }
+  .row + .row::before { content: ""; position: absolute; top: 0; left: 56px; right: 0; border-top: .5px solid var(--line); }
+  .row.noicon + .row.noicon::before { left: 16px; }
+  .row .ic { width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #fff; flex: none; }
+  .row .ic i { width: 17px; height: 17px; }
+  .row .t { flex: 1; min-width: 0; font-size: 17px; }
+  .row .s { font-size: 15px; color: var(--fg3); }
+  .row .v { color: var(--fg3); font-size: 17px; }
+  .row .chev { color: rgba(60,60,67,.3); width: 14px; height: 14px; }
+  .thumb { width: 84px; height: 62px; border-radius: 10px; object-fit: cover; flex: none; background: var(--fill); }
+  .news-row { display: flex; gap: 12px; padding: 12px 20px; }
+  .news-row + .news-row { border-top: .5px solid var(--line); }
+  .news-row .h { font-size: 17px; font-weight: 600; line-height: 1.22; letter-spacing: -.3px; }
+  .cap { font-size: 13px; color: var(--fg3); margin-top: 6px; }
+  .cap b { color: var(--tint); font-weight: 600; }
+  .hero { margin: 0 20px 14px; border-radius: 16px; overflow: hidden; background: var(--card); }
+  .hero img { width: 100%; height: 200px; object-fit: cover; display: block; }
+  .hero .hb { padding: 12px 14px 14px; }
+  .hero .h { font-size: 22px; font-weight: 700; line-height: 1.15; letter-spacing: -.4px; }
+  .hero .dek { font-size: 15px; color: var(--fg2); margin-top: 6px; line-height: 1.3; }
+  .seg { margin: 4px 20px 12px; display: flex; padding: 2px; border-radius: 9px; background: rgba(118,118,128,.12); }
+  .seg button { flex: 1; height: 28px; border: 0; background: transparent; border-radius: 7px; font: 500 13px -apple-system, system-ui; color: var(--fg); }
+  .seg button[data-selected="true"] { background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .strip { display: flex; gap: 10px; padding: 0 20px 12px; overflow-x: auto; scrollbar-width: none; }
+  .day { flex: none; width: 52px; padding: 8px 0; text-align: center; border-radius: 14px; background: var(--card); font-size: 12px; color: var(--fg3); }
+  .day b { display: block; font-size: 20px; color: var(--fg); font-weight: 600; }
+  .day[data-selected="true"] { background: var(--tint); color: rgba(255,255,255,.8); } .day[data-selected="true"] b { color: #fff; }
+  .ev { display: flex; gap: 12px; align-items: center; padding: 10px 16px; }
+  .ev + .ev::before { content: ""; position: absolute; top: 0; left: 82px; right: 0; border-top: .5px solid var(--line); }
+  .ev { position: relative; }
+  .ev img { width: 54px; height: 54px; border-radius: 12px; object-fit: cover; background: var(--fill); }
+  .ev .t { font-size: 17px; font-weight: 600; } .ev .s { font-size: 14px; color: var(--fg3); margin-top: 2px; }
+  .ev .when { text-align: right; font-size: 13px; color: var(--tint); font-weight: 600; white-space: nowrap; }
+  /* Live: full-bleed map with glass controls and a bottom card */
+  [data-screen="live"] { padding: 0; overflow: hidden; background: var(--sea); }
+  .map { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .map .sea { fill: var(--sea); } .map .land { fill: var(--land); stroke: rgba(0,0,0,.08); stroke-width: .3; } .map .roads { stroke: var(--road); } .map .labels text { fill: var(--fg3); font-family: -apple-system, system-ui; font-weight: 600; }
+  .pin .pin-halo { fill: var(--tint); opacity: .22; } .pin .pin-dot { fill: var(--tint); stroke: #fff; stroke-width: .8; }
+  .pin[data-kind="traffic"] .pin-dot, .pin[data-kind="traffic"] .pin-halo { fill: #FF9500; } .pin[data-kind="sea"] .pin-dot, .pin[data-kind="sea"] .pin-halo { fill: #007AFF; }
+  .live-top { position: absolute; top: 60px; left: 16px; right: 16px; display: flex; align-items: center; gap: 8px; z-index: 3; }
+  .glass { backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); background: var(--glass); border: 1px solid var(--glass-line); box-shadow: 0 6px 20px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.5); }
+  .live-title { flex: 1; height: 44px; border-radius: 22px; display: flex; align-items: center; gap: 8px; padding: 0 16px; font-weight: 700; font-size: 17px; }
+  .live-title .dot { width: 8px; height: 8px; border-radius: 4px; background: #34C759; box-shadow: 0 0 0 3px rgba(52,199,89,.25); }
+  .rbtn { width: 44px; height: 44px; border-radius: 22px; display: inline-flex; align-items: center; justify-content: center; color: var(--fg); }
+  .rbtn i { width: 20px; height: 20px; }
+  .live-side { position: absolute; right: 16px; top: 116px; display: flex; flex-direction: column; gap: 8px; z-index: 3; }
+  .live-card { position: absolute; left: 12px; right: 12px; bottom: 104px; border-radius: 28px; padding: 14px 16px 16px; z-index: 3; }
+  .live-card .grab { width: 36px; height: 5px; border-radius: 3px; background: rgba(60,60,67,.3); margin: 0 auto 10px; }
+  .now { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .now div { text-align: center; font-size: 11px; color: var(--fg3); }
+  .now b { display: block; font-size: 20px; font-weight: 700; color: var(--fg); letter-spacing: -.4px; }
+  .now i { width: 14px; height: 14px; vertical-align: -2px; }
+  .rep { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: .5px solid var(--line); }
+  .rep .ic { width: 34px; height: 34px; border-radius: 17px; background: var(--tint-soft); color: var(--tint); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .rep .ic i { width: 17px; height: 17px; }
+  .rep .t { font-size: 15px; font-weight: 600; } .rep .s { font-size: 13px; color: var(--fg3); }
+  .rep .n { margin-left: auto; font-size: 13px; color: var(--fg3); white-space: nowrap; }
+  .fab { position: absolute; right: 16px; bottom: 104px; z-index: 4; height: 48px; padding: 0 18px 0 14px; border-radius: 24px; background: var(--tint); color: #fff; font-weight: 600; font-size: 16px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 8px 24px rgba(228,22,43,.35); border: 0; }
+  .fab i { width: 18px; height: 18px; }
+  /* Ejja */
+  .chat { padding: 8px 16px; display: flex; flex-direction: column; gap: 6px; }
+  .msg { max-width: 78%; padding: 9px 13px; border-radius: 20px; font-size: 17px; line-height: 1.28; }
+  .msg.ejja { align-self: flex-start; background: var(--bubble); border-bottom-left-radius: 6px; }
+  .msg.me { align-self: flex-end; background: var(--tint); color: #fff; border-bottom-right-radius: 6px; }
+  .msg .at { display: block; font-size: 11px; opacity: .55; margin-top: 3px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 0 8px; }
+  .chips button { height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid var(--line); background: var(--card); color: var(--tint); font: 500 15px -apple-system, system-ui; }
+  .composer { position: absolute; left: 12px; right: 12px; bottom: 104px; height: 50px; border-radius: 25px; display: flex; align-items: center; gap: 8px; padding: 0 6px 0 6px; z-index: 4; }
+  .composer .plus { width: 38px; height: 38px; border-radius: 19px; background: var(--fill); display: inline-flex; align-items: center; justify-content: center; color: var(--fg); }
+  .composer .field { flex: 1; font-size: 17px; color: var(--fg3); }
+  .composer .send { width: 38px; height: 38px; border-radius: 19px; background: var(--tint); color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+  .composer i { width: 20px; height: 20px; }
+  .ejja-head { display: flex; align-items: center; gap: 12px; padding: 6px 20px 14px; }
+  .ejja-head .av { width: 44px; height: 44px; border-radius: 22px; background: var(--tint); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+  .ejja-head .n { font-size: 17px; font-weight: 600; } .ejja-head .s { font-size: 13px; color: #34C759; font-weight: 500; }
+  /* You */
+  .me-head { display: flex; flex-direction: column; align-items: center; padding: 6px 20px 16px; text-align: center; }
+  .me-head .av { width: 78px; height: 78px; border-radius: 39px; background: var(--tint); color: #fff; font-size: 28px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+  .me-head .n { font-size: 22px; font-weight: 700; letter-spacing: -.3px; } .me-head .s { font-size: 15px; color: var(--fg3); margin-top: 2px; }
+  .stats { display: flex; margin: 0 20px 6px; background: var(--card); border-radius: 20px; }
+  .stats div { flex: 1; text-align: center; padding: 14px 0; font-size: 12px; color: var(--fg3); }
+  .stats div + div { border-left: .5px solid var(--line); }
+  .stats b { display: block; font-size: 22px; font-weight: 700; color: var(--fg); letter-spacing: -.4px; }
+  .badges { display: flex; gap: 8px; padding: 0 20px 6px; overflow-x: auto; scrollbar-width: none; }
+  .badge { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 16px; background: var(--tint-soft); color: var(--tint); font-size: 13px; font-weight: 600; }
+  .badge i { width: 14px; height: 14px; }
+  .toggle { width: 51px; height: 31px; border-radius: 16px; background: #34C759; position: relative; flex: none; }
+  .toggle::after { content: ""; position: absolute; top: 2px; right: 2px; width: 27px; height: 27px; border-radius: 14px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
+  /* Liquid Glass tab bar */
+  .tabbar { position: absolute; left: 14px; right: 14px; bottom: 26px; height: 66px; border-radius: 33px; z-index: 10; display: flex; align-items: center; padding: 6px; }
+  .tabbar a { flex: 1; height: 54px; border-radius: 27px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--fg2); text-decoration: none; font-size: 10px; font-weight: 600; letter-spacing: 0; }
+  .tabbar a i { width: 24px; height: 24px; }
+  .tabbar a[data-selected="true"] { color: var(--tint); background: color-mix(in srgb, var(--fg) 7%, transparent); }
+  @media (max-width: 520px) { .tabbar { bottom: 18px; } .fab, .live-card, .composer { bottom: 96px; } }
+  /* Report sheet (form sheet with detents) */
+  #sheet { position: absolute; inset: 0; z-index: 40; }
+  #sheet-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; height: 78%; background: var(--bg); border-radius: 38px 38px 0 0; padding: 8px 20px 20px; overflow-y: auto; box-shadow: 0 -10px 40px rgba(0,0,0,.2); }
+  .sheet .grab { width: 36px; height: 5px; border-radius: 3px; background: rgba(60,60,67,.3); margin: 0 auto 12px; }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .sheet-head .t { font-size: 17px; font-weight: 600; } .sheet-head button { border: 0; background: none; color: var(--tint); font: 400 17px -apple-system, system-ui; }
+  .sheet-head button.pri { font-weight: 600; }
+  .kinds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 6px 0 14px; }
+  .kinds button { height: 68px; border: 0; border-radius: 16px; background: var(--card); color: var(--fg); font: 500 12px -apple-system, system-ui; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .kinds button i { width: 22px; height: 22px; color: var(--tint); }
+  .kinds button[data-selected="true"] { background: var(--tint); color: #fff; } .kinds button[data-selected="true"] i { color: #fff; }
+  .field { background: var(--card); border-radius: 14px; padding: 12px 16px; font-size: 17px; color: var(--fg3); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .field.area { min-height: 96px; align-items: flex-start; }
+  .send { width: 100%; height: 50px; border: 0; border-radius: 25px; background: var(--tint); color: #fff; font: 600 17px -apple-system, system-ui; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="phone"><div class="app">
+  <div class="statusbar"><span>9:41</span><span class="sb-right"><i data-lucide="signal"></i><i data-lucide="wifi"></i><span class="bat"></span></span></div>
+  <main id="main"></main>
+  <nav class="tabbar glass" aria-label="Tabs">
+    <a href="#live" data-tab="live"><i data-lucide="radio"></i>Live</a>
+    <a href="#news" data-tab="news"><i data-lucide="newspaper"></i>News</a>
+    <a href="#whatson" data-tab="whatson"><i data-lucide="calendar-days"></i>What's on</a>
+    <a href="#ejja" data-tab="ejja"><i data-lucide="message-circle"></i>Ejja</a>
+    <a href="#you" data-tab="you"><i data-lucide="user-round"></i>You</a>
+  </nav>
+  <div id="sheet" hidden><div id="sheet-backdrop"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-head"><button type="button" data-close-sheet>Cancel</button><span class="t">New report</span><button type="button" class="pri" data-close-sheet>Send</button></div>
+    <div class="kinds"><button type="button" data-seg data-selected="true"><i data-lucide="zap"></i>Power</button><button type="button" data-seg><i data-lucide="traffic-cone"></i>Traffic</button><button type="button" data-seg><i data-lucide="waves"></i>Water</button><button type="button" data-seg><i data-lucide="fish"></i>Sea</button><button type="button" data-seg><i data-lucide="siren"></i>Incident</button><button type="button" data-seg><i data-lucide="paw-print"></i>Animal</button><button type="button" data-seg><i data-lucide="volume-2"></i>Noise</button><button type="button" data-seg><i data-lucide="more-horizontal"></i>Other</button></div>
+    <div class="field"><i data-lucide="map-pin" style="width:18px;height:18px;color:var(--tint)"></i>Tower Road, Sliema (your location)</div>
+    <div class="field area">What is happening? Keep it factual, no names.</div>
+    <div class="field"><i data-lucide="camera" style="width:18px;height:18px;color:var(--tint)"></i>Add a photo</div>
+    <button type="button" class="send" data-close-sheet>Send report</button>
+  </div></div>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+<script src="/app/data.js"></script><script src="/app/map.js"></script><script src="/app/base.js"></script>
+<script>
+(function () {
+  var D = window.LMA, esc = window.LMBase.esc, ic = function (n) { return '<i data-lucide="' + n + '"></i>'; };
+  var KIND = { power: '#FF9500', water: '#007AFF', sea: '#5AC8FA', traffic: '#FF9500', other: '#8E8E93' };
+  function live() {
+    return '<section data-screen="live">' + window.LMMap({ portrait: true }) +
+      '<div class="live-top"><div class="live-title glass"><span class="dot"></span>Live in Malta<span style="margin-left:auto;font-weight:500;color:var(--fg3);font-size:14px">' + D.now.reports + ' today</span></div><button class="rbtn glass" type="button" aria-label="Layers">' + ic('layers') + '</button></div>' +
+      '<div class="live-side"><button class="rbtn glass" type="button" aria-label="Locate me">' + ic('locate') + '</button><button class="rbtn glass" type="button" aria-label="Alerts">' + ic('bell') + '</button></div>' +
+      '<div class="live-card glass"><div class="grab"></div><div class="now"><div><b>' + D.now.temp + '</b>' + ic('sun') + ' Sliema</div><div><b>' + D.now.sea + '</b>' + ic('waves') + ' sea</div><div><b>' + D.now.sunset + '</b>' + ic('sunset') + ' sunset</div><div><b>' + D.now.reports + '</b>' + ic('radio') + ' reports</div></div>' +
+      D.reports.slice(0, 3).map(function (r) { return '<div class="rep"><span class="ic">' + ic(r.icon) + '</span><div><div class="t">' + esc(r.title) + '</div><div class="s">' + esc(r.locality) + ' · ' + esc(r.age) + ' · ' + esc(r.confidence) + '</div></div><span class="n">' + r.count + ' ' + ic('users') + '</span></div>'; }).join('') + '</div>' +
+      '<button type="button" class="fab" data-open-sheet>' + ic('plus') + 'Report</button></section>';
+  }
+  function news() {
+    var h = D.news[0];
+    return '<section data-screen="news"><div class="navbar"><span class="title" style="opacity:0">News</span><span class="nb-btn">' + ic('bookmark') + '</span></div><h1 class="large">News</h1><div class="search">' + ic('search') + 'Search Lovin Malta</div>' +
+      '<div class="hero"><img src="' + D.img(h.img, 780, 400) + '" alt=""><div class="hb"><div class="cap"><b>' + esc(h.section) + '</b> · ' + esc(h.age) + '</div><div class="h" style="margin-top:4px">' + esc(h.title) + '</div><div class="dek">' + esc(h.dek) + '</div></div></div>' +
+      '<div class="group-title">Latest</div><div class="group">' + D.news.slice(1).map(function (n) { return '<div class="news-row"><div style="flex:1;min-width:0"><div class="h">' + esc(n.title) + '</div><div class="cap"><b>' + esc(n.section) + '</b> · ' + esc(n.age) + '</div></div><img class="thumb" src="' + D.img(n.img, 340, 250) + '" alt=""></div>'; }).join('') + '</div></section>';
+  }
+  function whatson() {
+    var days = [['Mon', 7], ['Tue', 8], ['Wed', 9], ['Thu', 10], ['Fri', 11], ['Sat', 12], ['Sun', 13]];
+    return '<section data-screen="whatson"><div class="navbar"><span class="title" style="opacity:0">What\'s on</span><span class="nb-btn">' + ic('sliders-horizontal') + '</span></div><h1 class="large">What\'s on</h1>' +
+      '<div class="seg"><button type="button" data-seg data-selected="true">This week</button><button type="button" data-seg>Weekend</button><button type="button" data-seg>Gozo</button><button type="button" data-seg>Free</button></div>' +
+      '<div class="strip">' + days.map(function (d, i) { return '<div class="day" data-chip ' + (i === 4 ? 'data-selected="true"' : '') + '>' + d[0] + '<b>' + d[1] + '</b></div>'; }).join('') + '</div>' +
+      '<div class="hero"><img src="' + D.img(D.events[0].img, 780, 400) + '" alt=""><div class="hb"><div class="cap"><b>Featured</b> · ' + esc(D.events[0].day) + ' ' + esc(D.events[0].date) + '</div><div class="h" style="margin-top:4px">' + esc(D.events[0].title) + '</div><div class="dek">' + esc(D.events[0].venue) + ' · from ' + esc(D.events[0].time) + '</div></div></div>' +
+      '<div class="group-title">Friday to Sunday</div><div class="group">' + D.events.slice(1).map(function (e) { return '<div class="ev"><img src="' + D.img(e.img, 200, 200) + '" alt=""><div style="flex:1;min-width:0"><div class="t">' + esc(e.title) + '</div><div class="s">' + esc(e.venue) + ' · ' + esc(e.cat) + '</div></div><div class="when">' + esc(e.day) + ' ' + esc(e.date) + '<br><span style="color:var(--fg3);font-weight:500">' + esc(e.time) + '</span></div></div>'; }).join('') + '</div></section>';
+  }
+  function ejja() {
+    return '<section data-screen="ejja"><div class="navbar"><span class="title" style="opacity:0">Ejja</span><span class="nb-btn">' + ic('phone') + '</span></div><div class="ejja-head"><span class="av">E</span><div><div class="n">Ejja</div><div class="s">Online · knows Malta right now</div></div></div>' +
+      '<div class="chat">' + D.chat.map(function (m) { return '<div class="msg ' + m.from + '">' + esc(m.text) + '<span class="at">' + m.at + '</span></div>' + (m.chips ? '<div class="chips">' + m.chips.map(function (c) { return '<button type="button">' + esc(c) + '</button>'; }).join('') + '</div>' : ''); }).join('') + '</div>' +
+      '<div class="composer glass"><span class="plus">' + ic('plus') + '</span><span class="field">Ask Ejja anything about Malta</span><span class="send">' + ic('arrow-up') + '</span></div></section>';
+  }
+  function you() {
+    var p = D.profile;
+    return '<section data-screen="you"><div class="navbar"><span class="title" style="opacity:0">You</span><span class="nb-btn">' + ic('settings') + '</span></div><h1 class="large">You</h1>' +
+      '<div class="me-head"><span class="av">' + p.initials + '</span><div class="n">' + esc(p.name) + '</div><div class="s">' + esc(p.trust) + ' · ' + esc(p.locality) + '</div></div>' +
+      '<div class="stats"><div><b>' + p.points + '</b>points</div><div><b>' + p.reports + '</b>reports</div><div><b>' + p.confirmed + '</b>confirmed</div><div><b>#' + p.rank + '</b>this month</div></div>' +
+      '<div class="group-title">Badges</div><div class="badges">' + p.badges.map(function (b) { return '<span class="badge">' + ic('award') + esc(b) + '</span>'; }).join('') + '</div>' +
+      '<div class="group-title">Alerts</div><div class="group"><div class="row"><span class="ic" style="background:#E4162B">' + ic('bell') + '</span><span class="t">Locality alerts</span><span class="toggle"></span></div>' + p.alerts.map(function (a) { return '<div class="row"><span class="ic" style="background:#007AFF">' + ic('map-pin') + '</span><span class="t">' + esc(a) + '</span>' + ic('chevron-right') + '</div>'; }).join('').replace(/<i data-lucide="chevron-right"><\/i>/g, '<i data-lucide="chevron-right" class="chev"></i>') + '</div>' +
+      '<div class="group-title">Settings</div><div class="group">' + D.settings.slice(1).map(function (s) { return '<div class="row"><span class="ic" style="background:#8E8E93">' + ic(s[2]) + '</span><span class="t">' + esc(s[0]) + '</span><span class="v">' + esc(s[1]) + '</span><i data-lucide="chevron-right" class="chev"></i></div>'; }).join('') + '</div></section>';
+  }
+  window.LMBase.boot(function () { document.getElementById('main').innerHTML = live() + news() + whatson() + ejja() + you(); });
+})();
+</script>
+</body>
+</html>

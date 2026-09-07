@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lovin Malta app · four directions</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: light dark; --ink: #16181d; --ink2: #5b6270; --line: #e5e7eb; --paper: #fff; --page: #f3f3f1; --red: #e4162b; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #f2f1ed; --ink2: #b9bcc3; --line: #2b2e34; --paper: #1b1d22; --page: #0f1114; } }
+  body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--page); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--page) 88%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .wrap { max-width: 1720px; margin: 0 auto; padding: 0 24px; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; }
+  h1 { font-size: 18px; margin: 0; font-weight: 700; } h1 span { color: var(--red); }
+  .seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); }
+  .seg button { height: 32px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; color: var(--ink2); font: 500 13px Inter, system-ui; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 24px; padding: 24px 0 48px; }
+  .card h2 { font-size: 15px; margin: 0 0 2px; } .card h2 small { color: var(--ink2); font-weight: 500; margin-left: 6px; }
+  .card p { font-size: 13px; color: var(--ink2); margin: 0 0 12px; line-height: 1.45; min-height: 3.6em; }
+  .card p b { color: var(--ink); font-weight: 600; }
+  .frame { width: 330px; height: 714px; overflow: hidden; border-radius: 46px; position: relative; margin: 0 auto; }
+  .frame iframe { width: 390px; height: 844px; border: 0; transform: scale(.8462); transform-origin: 0 0; display: block; }
+  .open { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .open:hover { color: var(--red); }
+  .note { font-size: 12px; color: var(--ink2); padding-bottom: 32px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<header><div class="wrap bar"><h1>Lovin <span>Malta</span> app · four directions, same app</h1>
+  <div class="seg" id="screens"><button type="button" data-t="live" aria-pressed="true">Live</button><button type="button" data-t="news">News</button><button type="button" data-t="whatson">What's on</button><button type="button" data-t="ejja">Ejja</button><button type="button" data-t="you">You</button><button type="button" data-t="sheet">Report sheet</button></div></div></header>
+<main class="wrap">
+  <div class="grid">
+    <div class="card"><h2>1 · Apple native <small>iOS 26</small></h2><p><b>What Apple ships.</b> SF Pro, large titles, inset grouped lists, Liquid Glass tab bar and controls, sheets with detents. References: Apple's Landmarks sample, Ice Cubes, NetNewsWire.</p><div class="frame"><iframe src="/app/1/" title="Mock 1"></iframe></div><a class="open" href="https://mockapp1.brunopessoa.com/">Open full screen: mockapp1.brunopessoa.com</a></div>
+    <div class="card"><h2>2 · HeroUI Native</h2><p><b>The admin's sibling.</b> Inter, white cards with 24 px corners, soft chips, pill buttons, segmented tabs, one design language with the back office. Reference: HeroUI Native.</p><div class="frame"><iframe src="/app/2/" title="Mock 2"></iframe></div><a class="open" href="https://mockapp2.brunopessoa.com/">Open full screen: mockapp2.brunopessoa.com</a></div>
+    <div class="card"><h2>3 · Social feed</h2><p><b>A community timeline.</b> Everything is a post: reports, stories, events. Avatars, verified marks, confirm and like counts, a compose button. References: Bluesky, Mattermost.</p><div class="frame"><iframe src="/app/3/" title="Mock 3"></iframe></div><a class="open" href="https://mockapp3.brunopessoa.com/">Open full screen: mockapp3.brunopessoa.com</a></div>
+    <div class="card"><h2>4 · Editorial</h2><p><b>A daily paper in your pocket.</b> Masthead, kickers, rules, numbered lists, poster grid, big numbers for the day. References: Artsy, NetNewsWire, Wikipedia iOS.</p><div class="frame"><iframe src="/app/4/" title="Mock 4"></iframe></div><a class="open" href="https://mockapp4.brunopessoa.com/">Open full screen: mockapp4.brunopessoa.com</a></div>
+  </div>
+  <p class="note">Same five tabs, same sample content, same system tab bar in all four (the native iOS 26 one the app should adopt regardless). What differs is the content layer. Dark mode follows your device. Photos are placeholders. Open a full-screen link on an iPhone to feel it at real size.</p>
+</main>
+<script>
+  document.getElementById('screens').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#screens button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    var t = b.getAttribute('data-t');
+    document.querySelectorAll('iframe').forEach(function (f) { f.contentWindow.postMessage(t === 'sheet' ? { lmTab: 'live', lmSheet: true } : { lmTab: t, lmSheet: false }, '*'); });
+  });
+</script>
+</body>
+</html>
