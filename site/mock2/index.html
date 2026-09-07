@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en-MT" data-accent="default" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lovin Admin · Mock 2 · HeroUI v3</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Lovin Admin mockup built with HeroUI v3: the @heroui/styles component stylesheet and theme tokens on Tailwind CSS v4.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23338ef7'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Inter,sans-serif' font-weight='700' font-size='16' fill='white'%3E2%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@heroui/styles@3.2.4/dist/heroui.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.13"></script>
+<style type="text/tailwindcss">
+  @custom-variant dark (&:where(.dark, .dark *));
+  /* HeroUI's Tailwind bridge (themes/shared/theme.css): semantic tokens as Tailwind colours. */
+  @theme inline {
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --color-background: var(--background);
+    --color-background-secondary: var(--background-secondary);
+    --color-background-tertiary: var(--background-tertiary);
+    --color-background-inverse: var(--background-inverse);
+    --color-foreground: var(--foreground);
+    --color-surface: var(--surface);
+    --color-surface-foreground: var(--surface-foreground);
+    --color-surface-hover: var(--surface-hover);
+    --color-surface-secondary: var(--surface-secondary);
+    --color-surface-tertiary: var(--surface-tertiary);
+    --color-overlay: var(--overlay);
+    --color-muted: var(--muted);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent-hover: var(--accent-hover);
+    --color-accent-soft: var(--accent-soft);
+    --color-accent-soft-foreground: var(--accent-soft-foreground);
+    --color-segment: var(--segment);
+    --color-border: var(--border);
+    --color-separator: var(--separator);
+    --color-separator-secondary: var(--separator-secondary);
+    --color-default: var(--default);
+    --color-default-foreground: var(--default-foreground);
+    --color-default-hover: var(--default-hover);
+    --color-success: var(--success);
+    --color-success-soft: var(--success-soft);
+    --color-success-soft-foreground: var(--success-soft-foreground);
+    --color-warning: var(--warning);
+    --color-warning-soft: var(--warning-soft);
+    --color-warning-soft-foreground: var(--warning-soft-foreground);
+    --color-danger: var(--danger);
+    --color-danger-soft: var(--danger-soft);
+    --color-danger-soft-foreground: var(--danger-soft-foreground);
+    --color-backdrop: var(--backdrop);
+    --color-field-placeholder: var(--field-placeholder, var(--muted));
+    --shadow-surface: var(--surface-shadow);
+    --shadow-overlay: var(--overlay-shadow);
+    --radius-xl: calc(var(--radius) * 1.5);
+    --radius-2xl: calc(var(--radius) * 2);
+    --radius-3xl: calc(var(--radius) * 3);
+  }
+</style>
+<style>
+  /* Lovin red as the accent: one variable in HeroUI's theme. */
+  [data-accent="lovin"] { --accent: oklch(0.57 0.225 25); --accent-foreground: var(--snow); }
+  .dark[data-accent="lovin"] { --accent: oklch(0.64 0.21 22); }
+  /* The tabs indicator and the checkbox fill are positioned by React in HeroUI; static fallbacks here. */
+  .tabs__tab { white-space: nowrap; }
+  .tabs__tab[data-selected="true"] { background: var(--segment); box-shadow: var(--surface-shadow); }
+  .tabs--secondary .tabs__tab[data-selected="true"] { background: transparent; box-shadow: inset 0 -2px 0 0 var(--accent); }
+  .checkbox[aria-checked="true"] .checkbox__control { background: var(--accent); }
+  .checkbox[aria-checked="true"] .checkbox__indicator { opacity: 1; }
+  .checkbox .checkbox__indicator { opacity: 0; }
+  .switch { --switch-control-bg: var(--default); --switch-control-bg-checked: var(--accent); }
+  html { background: var(--background); }
+  body { font-family: "Inter", ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  [hidden] { display: none !important; }
+  details > summary { list-style: none; }
+</style>
+<script>
+  window.MOCK = {
+    key: 'mock2', label: 'Mock 2 · HeroUI v3', tagline: 'The @heroui/styles component stylesheet and theme tokens on Tailwind CSS v4, on the real Lovin Admin structure.',
+    other: { label: 'Mock 1 · Preline', url: 'https://mock1.brunopessoa.com/' }
+  };
+  try { if (localStorage.getItem('lm-theme') === 'dark') { document.documentElement.classList.add('dark'); document.documentElement.setAttribute('data-theme', 'dark'); } } catch (e) {}
+</script>
+</head>
+<body>
+<noscript>This mockup needs JavaScript.</noscript>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+<script src="/shared/data.js"></script>
+<script src="/mock2/ui.js"></script>
+<script src="/shared/app.js"></script>
+</body>
+</html>
